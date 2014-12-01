@@ -1,5 +1,5 @@
 import 'dart:html';
-import 'package:pixel_sprite_generator/pixel_sprite_generator.dart';
+import 'package:pixel_sprite_generator/pixel_sprite_generator.dart' as psg;
 
 void main() {
   window.onLoad.listen((e) => createExample());
@@ -9,7 +9,7 @@ void createExample() {
   var SPRITE_SCALE = 2;
   var SPRITE_COUNT = 100;
 
-  var spaceship = new Mask([
+  var spaceship = new psg.Mask([
           0, 0, 0, 0, 0, 0,
           0, 0, 0, 0, 1, 1,
           0, 0, 0, 0, 1,-1,
@@ -24,7 +24,7 @@ void createExample() {
           0, 0, 0, 0, 0, 0
   ], 6, 12, true, false);
 
-  var dragon = new Mask([
+  var dragon = new psg.Mask([
           0,0,0,0,0,0,0,0,0,0,0,0,
           0,0,0,0,1,1,1,1,0,0,0,0,
           0,0,0,1,1,2,2,1,1,0,0,0,
@@ -38,8 +38,8 @@ void createExample() {
           0,0,0,0,1,1,1,1,0,0,0,0,
           0,0,0,0,0,0,0,0,0,0,0,0
   ], 12, 12, false, false); 
-          
-  var robot = new Mask([
+
+  var robot = new psg.Mask([
           0, 0, 0, 0,
           0, 1, 1, 1,
           0, 1, 2, 2,
@@ -55,25 +55,72 @@ void createExample() {
 
   var fragment = document.createDocumentFragment();
 
-  var i, sprite;
-  for (i = 0; i < SPRITE_COUNT; i++) {
-      sprite = new Sprite(spaceship, true);
-      fragment.append(resize(sprite.canvas, SPRITE_SCALE));
-  }
+  var i, sprite, div;
 
-  fragment.append(document.createElement('hr'));
-
-  for (i = 0; i < SPRITE_COUNT; i++) {
-      sprite = new Sprite(dragon, true);
-      fragment.append(resize(sprite.canvas, SPRITE_SCALE));
-  }
-
-  fragment.append(document.createElement('hr'));
+  // Example 1
+  div = document.createElement('div');
+  div.text = 'Colored ship sprites';
+  div.append(document.createElement('hr'));
 
   for (i = 0; i < SPRITE_COUNT; i++) {
-      sprite = new Sprite(robot, true);
-      fragment.append(resize(sprite.canvas, SPRITE_SCALE));
+    sprite = new psg.Sprite(spaceship, true);
+      div.append(resize(sprite.canvas, SPRITE_SCALE));
   }
+
+  fragment.append(div);
+
+  // Example 2
+  div = document.createElement('div');
+  div.text = 'Colored ship sprites (with low saturation)';
+  div.append(document.createElement('hr'));
+
+  for (i = 0; i < SPRITE_COUNT; i++) {
+      sprite = new psg.Sprite(spaceship, true);
+      // TODO: saturation      : 0.1
+      div.append(resize(sprite.canvas, SPRITE_SCALE));
+  }
+
+  fragment.append(div);
+
+  // Example 3
+  div = document.createElement('div');
+  div.text = 'Colored ship sprites (with many color variations per ship)';
+  div.append(document.createElement('hr'));
+
+  for (i = 0; i < SPRITE_COUNT; i++) {
+    sprite = new psg.Sprite(spaceship, true);
+      // TODO:
+      //colored         : true,
+      //colorVariations : 0.9,
+      //saturation      : 0.8
+    div.append(resize(sprite.canvas, SPRITE_SCALE));
+  }
+
+  fragment.append(div);
+
+  // Example 4
+  div = document.createElement('div');
+  div.text = 'Colored dragon sprites';
+  div.append(document.createElement('hr'));
+
+  for (i = 0; i < SPRITE_COUNT; i++) {
+    sprite = new psg.Sprite(dragon, true);
+    div.append(resize(sprite.canvas, SPRITE_SCALE));
+  }
+
+  fragment.append(div);
+
+  // Example 5
+  div = document.createElement('div');
+  div.text = 'Black & white robot sprites';
+  div.append(document.createElement('hr'));
+
+  for (i = 0; i < SPRITE_COUNT; i++) {
+    sprite = new psg.Sprite(robot);
+    div.append(resize(sprite.canvas, SPRITE_SCALE));
+  }
+  
+  fragment.append(div);
   
   document.body.append(fragment);
 }

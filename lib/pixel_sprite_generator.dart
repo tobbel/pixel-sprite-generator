@@ -59,7 +59,7 @@ class Sprite {
   List<num> data;
   bool isColored;
   CanvasElement canvas;
-  Sprite(this.mask, this.isColored) {
+  Sprite(this.mask, [this.isColored = false]) {
     width = mask.width * (mask.mirrorX ? 2 : 1);
     height = mask.height * (mask.mirrorY ? 2 : 1);
     data = new List<num>(this.width * this.height);
