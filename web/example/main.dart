@@ -63,7 +63,7 @@ void createExample() {
   div.append(document.createElement('hr'));
 
   for (i = 0; i < SPRITE_COUNT; i++) {
-    sprite = new psg.Sprite(spaceship, true);
+    sprite = new psg.Sprite(spaceship, new psg.SpriteOptions(colored: true));
       div.append(resize(sprite.canvas, SPRITE_SCALE));
   }
 
@@ -75,7 +75,7 @@ void createExample() {
   div.append(document.createElement('hr'));
 
   for (i = 0; i < SPRITE_COUNT; i++) {
-      sprite = new psg.Sprite(spaceship, true);
+      sprite = new psg.Sprite(spaceship, new psg.SpriteOptions(colored: true));
       // TODO: saturation      : 0.1
       div.append(resize(sprite.canvas, SPRITE_SCALE));
   }
@@ -88,11 +88,7 @@ void createExample() {
   div.append(document.createElement('hr'));
 
   for (i = 0; i < SPRITE_COUNT; i++) {
-    sprite = new psg.Sprite(spaceship, true);
-      // TODO:
-      //colored         : true,
-      //colorVariations : 0.9,
-      //saturation      : 0.8
+    sprite = new psg.Sprite(spaceship, new psg.SpriteOptions(colored: true, colorVariations: 0.9, saturation: 0.8));
     div.append(resize(sprite.canvas, SPRITE_SCALE));
   }
 
@@ -104,7 +100,7 @@ void createExample() {
   div.append(document.createElement('hr'));
 
   for (i = 0; i < SPRITE_COUNT; i++) {
-    sprite = new psg.Sprite(dragon, true);
+    sprite = new psg.Sprite(dragon, new psg.SpriteOptions(colored: true));
     div.append(resize(sprite.canvas, SPRITE_SCALE));
   }
 

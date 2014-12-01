@@ -44,6 +44,11 @@ class Mask {
   Mask(this.data, this.width, this.height, this.mirrorX, this.mirrorY);
 }
 
+class SpriteOptions {
+  bool colored;
+  num edgeBrightness, colorVariations, brightnessNoise, saturation;
+  SpriteOptions({this.colored: true, this.edgeBrightness: 0.3, this.colorVariations: 0.2, this.brightnessNoise: 0.3, this.saturation: 0.5});
+}
 
 /**
 *   The Sprite class makes use of a Mask instance to generate a 2D sprite on a
@@ -54,15 +59,23 @@ class Mask {
 *   @constructor
 */
 class Sprite {
+  CanvasElement canvas;
+  CanvasRenderingContext2D ctx;
+  ImageData pixels;
+  SpriteOptions options;
   Mask mask;
   num width, height;
   List<num> data;
-  bool isColored;
-  CanvasElement canvas;
-  Sprite(this.mask, [this.isColored = false]) {
+  
+  Sprite(this.mask, [this.options]) {
     width = mask.width * (mask.mirrorX ? 2 : 1);
     height = mask.height * (mask.mirrorY ? 2 : 1);
     data = new List<num>(this.width * this.height);
+    
+    // Initialize options to default if not set
+    if (options == null) {
+      options = new SpriteOptions();
+    }
     
     init();
   }
@@ -115,8 +128,6 @@ class Sprite {
   *   @method 
   *   @returns {undefined}
   */
-  CanvasRenderingContext2D ctx;
-  ImageData pixels;
   void initContext() {
     ctx    = canvas.getContext('2d');
     pixels = ctx.createImageData(this.width, this.height);
@@ -290,7 +301,7 @@ class Sprite {
   void renderPixelData() {
     var rand = new Math.Random();
     var isVerticalGradient = rand.nextBool();
-    var saturation         = rand.nextDouble() * 0.5;
+    var saturation         = Math.max(Math.min(rand.nextDouble() * options.saturation, 1), 0);
     var hue                = rand.nextDouble();
 
     var v, ulen, vlen;
@@ -309,7 +320,7 @@ class Sprite {
                          (rand.nextDouble() * 2 - 1)) / 3).abs();
 
       // Only change the color sometimes (values above 0.8 are less likely than others)
-      if (isNewColor > 0.8) {
+      if (isNewColor > (1 - options.colorVariations)) {
         hue = rand.nextDouble();
       }
 
@@ -326,18 +337,19 @@ class Sprite {
         rgbValue rgb = new rgbValue(1.0, 1.0, 1.0);
 
         if (val != 0) {
-          if (this.isColored) {
+          if (options.colored) {
             // Fade brightness away towards the edges
-            var brightness = Math.sin((u / ulen) * Math.PI) * 0.7 + rand.nextDouble() * 0.3;
+            var brightness = Math.sin((u / ulen) * Math.PI) * (1 - options.brightnessNoise) 
+                           + rand.nextDouble() * options.brightnessNoise;
 
             // Get the RGB color value
             hslToRgb(hue, saturation, brightness, rgb);
 
             // If this is an edge, then darken the pixel
             if (val == -1) {
-                rgb.r *= 0.3;
-                rgb.g *= 0.3;
-                rgb.b *= 0.3;
+                rgb.r *= options.edgeBrightness;
+                rgb.g *= options.edgeBrightness;
+                rgb.b *= options.edgeBrightness;
             }
           } else {
             // Not colored, simply output black
