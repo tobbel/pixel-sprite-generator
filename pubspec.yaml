@@ -1,5 +1,5 @@
 name: pixel_sprite_generator
-version: 1.0.1
+version: 0.0.3
 author: Tobias Lilja <tobias.lilja@gmail.com>
 description: Dart implementation of a procedural pixel sprite generator.
 homepage: https://github.com/tobbel/pixel-sprite-generator
