@@ -1,7 +1,11 @@
-import '../web/pixel_sprite_generator.dart';
 import 'dart:html';
+import 'package:pixel_sprite_generator/pixel_sprite_generator.dart';
 
 void main() {
+  window.onLoad.listen((e) => createExample());
+}
+
+void createExample() {
   var SPRITE_SCALE = 2;
   var SPRITE_COUNT = 100;
 
